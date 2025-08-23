@@ -24,7 +24,7 @@ const mockHospitals = [
     name: "Green Valley Multi-speciality",
     type: "Private",
     city: "mumbai",
-    image: "https://placehold.co/600x400/27ae60/ffffff?text=Green+Valley+Hospital&font=montserrat",
+    image: "https://www.vecteezy.com/free-vector/hospital",
     rating: 4.7,
     reviews: 156,
     distanceKm: 4.2,
@@ -241,3 +241,4 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 });
+
