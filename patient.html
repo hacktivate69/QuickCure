@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>QuickCare – Patient Booking</title>
+  <link rel="stylesheet" href="base.css" />
+  <link rel="stylesheet" href="patient.css" />
+</head>
+<body>
+  <!-- Navbar (no Doctor/profile link / logout) -->
+  <header class="navbar">
+    <div class="logo">
+      <img src="QuickCureLogo.jpg" alt="QuickCare Medical Logo - Stethoscope icon with blue background" onerror="this.style.display='none'" />
+      <span>QuickCare</span>
+    </div>
+    <nav class="nav-links">
+      <a href="indexPatient.html" id="homeBtn">Home</a>
+      <a href="index.html" id="logoutBtn">Logout</a>
+      <a href="patient_profile.html">
+        <img src="User-Profile.png" alt="User  Profile"
+             style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover;" />
+      </a>
+    </nav>
+  </header>
+
+  <!-- Hero -->
+  <section>
+    <h1 style="text-align: center; color: #2E8B57;">Your Health, Our Priority</h1>
+  </section>
+
+  <!-- Step 1: Inputs -->
+  <section class="booking-flow" id="bookingStep">
+    <h2>Select Your Preferences</h2>
+
+    <label for="specialty">Medical Specialty</label>
+    <select id="specialty">
+      <option value="">-- Choose Specialty --</option>
+      <option value="cardiology">Cardiology</option>
+      <option value="dermatology">Dermatology</option>
+      <option value="orthopedics">Orthopedics</option>
+      <option value="pediatrics">Pediatrics</option>
+      <option value="ent">ENT (Ear, Nose, Throat)</option>
+      <option value="psychiatry">Psychiatry</option>
+      <option value="general">General Physician</option>
+      <option value="neurology">Neurology</option>
+      <option value="oncology">Oncology</option>
+      <option value="gynecology">Gynecology</option>
+    </select>
+
+    <label for="city">City</label>
+    <select id="city">
+      <option value="">-- Choose City --</option>
+      <option value="delhi">Delhi</option>
+      <option value="mumbai">Mumbai</option>
+      <option value="bengaluru">Bengaluru</option>
+      <option value="kolkata">Kolkata</option>
+      <option value="chennai">Chennai</option>
+      <option value="hyderabad">Hyderabad</option>
+      <option value="pune">Pune</option>
+      <option value="lucknow">Lucknow</option>
+    </select>
+
+    <button id="nextBtn" class="btn">Find Available Doctors</button>
+  </section>
+
+  <!-- Step 2: Ranked Hospitals -->
+  <section class="hospital-list" id="hospitalSection" style="display:none;">
+    <h2>Recommended Hospitals & Doctors</h2>
+    <p style="text-align:center;color:#6c757d;margin-bottom:30px;">Sorted by earliest availability and best ratings</p>
+    <div id="hospitalList"></div>
+  </section>
+
+  <footer>
+    <p>© 2025 QuickCare. Making healthcare accessible for everyone.</p>
+  </footer>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const specialtySelect = document.getElementById("specialty");
+      const citySelect = document.getElementById("city");
+      const nextBtn = document.getElementById("nextBtn");
+      const bookingStep = document.getElementById("bookingStep");
+      const hospitalSection = document.getElementById("hospitalSection");
+      const hospitalListDiv = document.getElementById("hospitalList");
+
+      // Sample mock doctors data (replace with your actual data or load from localStorage)
+      const mockDoctors = [
+        {
+          id: 1,
+          name: "Dr. Rajesh Sharma",
+          specialty: "cardiology",
+          hospital: "City General Hospital",
+          city: "delhi",
+          rating: 4.7,
+          availability: ["2024-08-15 10:00", "2024-08-16 14:00"],
+          fee: 800,
+          image: "https://placehold.co/100x100/3498db/ffffff?text=RS"
+        },
+        {
+          id: 2,
+          name: "Dr. Priya Singh",
+          specialty: "pediatrics",
+          hospital: "Green Valley Multi-speciality",
+          city: "mumbai",
+          rating: 4.9,
+          availability: ["2024-08-15 09:00", "2024-08-17 11:30"],
+          fee: 900,
+          image: "https://placehold.co/100x100/9b59b6/ffffff?text=PS"
+        },
+        // Add more mock doctors as needed
+      ];
+
+      // Get current logged-in patient user
+      const currentUser   = JSON.parse(localStorage.getItem("mr_appointment_current_user"));
+
+      if (!currentUser   || currentUser  .role !== "patient") {
+        alert("Please sign in as a patient to book an appointment.");
+        window.location.href = "signin.html";
+        return;
+      }
+
+      // Function to save appointment for current patient
+      function savePatientAppointment(appointmentDetails) {
+        const key = `patient_appointments_${currentUser  .email}`;
+        const appointments = JSON.parse(localStorage.getItem(key) || "[]");
+        appointments.push(appointmentDetails);
+        localStorage.setItem(key, JSON.stringify(appointments));
+      }
+
+      // Render list of doctors/hospitals matching filters
+      function renderDoctors(doctors) {
+        if (doctors.length === 0) {
+          hospitalListDiv.innerHTML = `<p style="text-align:center;color:#6c757d;">No doctors found matching your criteria.</p>`;
+          return;
+        }
+
+        hospitalListDiv.innerHTML = doctors.map(doc => `
+          <div class="hospital-card" style="margin-bottom: 25px; padding: 20px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); display: flex; align-items: center; gap: 20px;">
+            <img src="${doc.image}" alt="${doc.name}" style="width: 100px; height: 100px; border-radius: 50%; object-fit: cover;" />
+            <div style="flex-grow: 1;">
+              <h3 style="margin: 0 0 8px;">${doc.name}</h3>
+              <p style="margin: 0 0 4px;">Specialty: ${capitalize(doc.specialty)}</p>
+              <p style="margin: 0 0 4px;">Hospital: ${doc.hospital}</p>
+              <p style="margin: 0 0 4px;">City: ${capitalize(doc.city)}</p>
+              <p style="margin: 0 0 4px;">Rating: ${doc.rating} ⭐</p>
+              <p style="margin: 0 0 8px;">Consultation Fee: ₹${doc.fee}</p>
+              <button class="btn book-btn" data-id="${doc.id}">Book Appointment</button>
+            </div>
+          </div>
+        `).join("");
+
+        // Add event listeners to all book buttons
+        document.querySelectorAll(".book-btn").forEach(button => {
+          button.addEventListener("click", () => {
+            const doctorId = parseInt(button.getAttribute("data-id"));
+            const doctor = doctors.find(d => d.id === doctorId);
+            if (doctor) {
+              showBookingDialog(doctor);
+            }
+          });
+        });
+      }
+
+      // Capitalize first letter helper
+      function capitalize(str) {
+        if (!str) return "";
+        return str.charAt(0).toUpperCase() + str.slice(1);
+      }
+
+      // Show booking dialog to select date/time from availability
+      function showBookingDialog(doctor) {
+        // Create modal overlay
+        const modalOverlay = document.createElement("div");
+        modalOverlay.style.position = "fixed";
+        modalOverlay.style.top = 0;
+        modalOverlay.style.left = 0;
+        modalOverlay.style.width = "100%";
+        modalOverlay.style.height = "100%";
+        modalOverlay.style.backgroundColor = "rgba(0,0,0,0.5)";
+        modalOverlay.style.display = "flex";
+        modalOverlay.style.justifyContent = "center";
+        modalOverlay.style.alignItems = "center";
+        modalOverlay.style.zIndex = 1000;
+
+        // Modal content container
+        const modalContent = document.createElement("div");
+        modalContent.style.backgroundColor = "#fff";
+        modalContent.style.padding = "30px";
+        modalContent.style.borderRadius = "12px";
+        modalContent.style.width = "320px";
+        modalContent.style.boxShadow = "0 8px 25px rgba(0,0,0,0.15)";
+        modalContent.style.textAlign = "center";
+
+        modalContent.innerHTML = `
+          <h3>Book Appointment with ${doctor.name}</h3>
+          <p>Select an available date and time:</p>
+          <select id="appointmentTimeSelect" style="width: 100%; padding: 10px; margin-bottom: 20px; border-radius: 8px; border: 1px solid #ccc;">
+            ${doctor.availability.map(time => `<option value="${time}">${time}</option>`).join("")}
+          </select>
+          <button id="confirmBookingBtn" class="btn" style="width: 100%;">Confirm Booking</button>
+          <button id="cancelBookingBtn" class="btn clear" style="width: 100%; margin-top: 10px;">Cancel</button>
+        `;
+
+        modalOverlay.appendChild(modalContent);
+        document.body.appendChild(modalOverlay);
+
+        // Event listeners for buttons
+        document.getElementById("confirmBookingBtn").addEventListener("click", () => {
+          const selectedTime = document.getElementById("appointmentTimeSelect").value;
+          if (!selectedTime) {
+            alert("Please select a date and time.");
+            return;
+          }
+
+          // Save appointment
+          const appointmentDetails = {
+            doctorName: doctor.name,
+            specialty: doctor.specialty,
+            hospitalName: doctor.hospital,
+            time: selectedTime,
+            fee: doctor.fee
+          };
+          savePatientAppointment(appointmentDetails);
+
+          alert("Appointment booked successfully!");
+
+          // Close modal
+          document.body.removeChild(modalOverlay);
+
+          // Redirect to profile page to see appointments
+          window.location.href = "patient_profile.html";
+        });
+
+        document.getElementById("cancelBookingBtn").addEventListener("click", () => {
+          document.body.removeChild(modalOverlay);
+        });
+      }
+
+      // Handle "Find Available Doctors" button click
+      nextBtn.addEventListener("click", () => {
+        const selectedSpecialty = specialtySelect.value;
+        const selectedCity = citySelect.value;
+
+        if (!selectedSpecialty) {
+          alert("Please select a medical specialty.");
+          return;
+        }
+        if (!selectedCity) {
+          alert("Please select a city.");
+          return;
+        }
+
+        // Filter doctors by specialty and city
+        const filteredDoctors = mockDoctors.filter(doc =>
+          doc.specialty === selectedSpecialty && doc.city === selectedCity
+        );
+
+        // Hide booking step, show hospital list
+        bookingStep.style.display = "none";
+        hospitalSection.style.display = "block";
+
+        renderDoctors(filteredDoctors);
+      });
+
+      // Logout button
+      const logoutBtn = document.getElementById("logoutBtn");
+      if (logoutBtn) {
+        logoutBtn.addEventListener("click", (e) => {
+          e.preventDefault();
+          localStorage.removeItem("mr_appointment_current_user");
+          window.location.href = "index.html";
+        });
+      }
+    });
+  </script>
+</body>
+</html>
