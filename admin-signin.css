@@ -1,277 +1,188 @@
-/* MultipleFiles/admin-signin.css */
+/* Import base styles */
+@import url('base.css');
 
-/* Import fonts - consistent with other files */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+/* Specific styles for admin-signin.html */
 
-/* Global resets and body styles - consistent with admin.css, admin-doctor.css, etc. */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-body {
-    font-family: 'Inter', -apple-system, BlinkMacMacFont, sans-serif;
-    /* Consistent background gradient from admin pages */
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    min-height: 100vh;
-    color: #2d3748; /* Consistent main text color */
-    line-height: 1.6;
-}
-
-/* Admin Sign-in Container */
 .admin-signin-container {
-  /* No background here, as it's set on body */
-  min-height: 100vh; /* Ensure it takes full height */
+  background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%); /* Deep blue-gray gradient */
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 2rem; /* Consistent padding */
+  padding: 40px 20px;
 }
 
 .admin-signin-container h1 {
-  color: #fff; /* White for contrast on the body's gradient background */
-  margin-bottom: 1.5rem; /* Consistent spacing */
-  font-size: 2.5rem; /* Larger, impactful heading */
-  font-weight: 700; /* Bold */
-  text-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); /* Soft shadow for depth */
+  color: #fff;
+  margin-bottom: 30px;
+  font-size: 2.5em; /* Slightly larger */
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.4); /* More pronounced shadow */
   text-align: center;
 }
 
-/* Admin Sign-in Form Card */
 .admin-signin-form {
-  /* Consistent card styling from other admin pages */
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(20px); /* Consistent blur */
-  border-radius: 20px; /* Consistent border-radius */
-  padding: 2.5rem; /* Generous padding */
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1); /* Consistent shadow */
-  border: 1px solid rgba(255, 255, 255, 0.2); /* Consistent border */
+  background-color: rgba(255, 255, 255, 0.95); /* Slightly transparent white */
+  padding: 45px; /* Increased padding */
+  border-radius: 16px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15); /* More pronounced shadow */
   width: 100%;
-  max-width: 450px; /* Slightly wider for better input display */
+  max-width: 420px; /* Slightly wider */
+  backdrop-filter: blur(12px); /* Slightly more blur */
 }
 
 .admin-signin-form label {
-  margin-bottom: 0.5rem; /* Consistent spacing */
-  font-weight: 600; /* Consistent font-weight */
-  color: #4a5568; /* Slightly darker gray for labels */
+  margin-bottom: 10px; /* Increased margin */
+  font-weight: 600;
+  color: #2c3e50; /* Deep blue-gray */
   display: block;
-  font-size: 0.875rem; /* Consistent font size */
+  font-size: 0.95em;
 }
 
 .admin-signin-form input[type="text"],
 .admin-signin-form input[type="password"] {
-  width: 100%; /* Full width */
-  padding: 0.75rem; /* Consistent padding */
-  margin-bottom: 1.5rem; /* Consistent spacing */
-  border: 2px solid #e2e8f0; /* Consistent border */
-  border-radius: 12px; /* Consistent border-radius */
-  font-size: 1rem; /* Consistent font size */
-  transition: all 0.3s ease; /* Smooth transitions */
-  background: #fff; /* White background for inputs */
-  color: #2d3748; /* Input text color */
+  width: calc(100% - 24px);
+  padding: 14px; /* Increased padding */
+  margin-bottom: 25px; /* Increased margin */
+  border: 2px solid #e1e8ed;
+  border-radius: 8px;
+  font-size: 16px;
+  transition: all 0.3s ease;
 }
 
 .admin-signin-form input:focus {
+  border-color: #3498db; /* Calming blue */
   outline: none;
-  border-color: #667eea; /* Consistent focus color */
-  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1); /* Consistent focus shadow */
-  transform: translateY(-1px); /* Slight lift on focus */
+  box-shadow: 0 0 0 4px rgba(52, 152, 219, 0.15); /* Slightly larger, more transparent shadow */
+  transform: translateY(-2px); /* More pronounced lift */
 }
 
-/* Checkbox styling */
-.admin-signin-form input[type="checkbox"] {
-    width: auto; /* Override full width */
-    margin-right: 0.5rem;
-    margin-bottom: 0; /* Remove bottom margin */
-    transform: translateY(2px); /* Align with text */
-    border-radius: 4px; /* Slightly rounded checkbox */
-    border: 1px solid #a0aec0; /* Light gray border */
-    appearance: none; /* Hide default checkbox */
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    height: 18px;
-    width: 18px;
-    min-width: 18px; /* Ensure it doesn't shrink */
-    background-color: #fff;
-    display: inline-block;
-    vertical-align: middle;
-    transition: all 0.2s ease;
-    cursor: pointer;
-}
-
-.admin-signin-form input[type="checkbox"]:checked {
-    background-color: #667eea; /* Accent color when checked */
-    border-color: #667eea;
-    position: relative;
-}
-
-.admin-signin-form input[type="checkbox"]:checked::after {
-    content: '\2713'; /* Checkmark character */
-    color: white;
-    font-size: 12px;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-}
-
-.admin-signin-form .remember-me-container {
-    display: flex;
-    align-items: center;
-    margin: 1rem 0 1.5rem 0; /* Adjust margin for checkbox */
-}
-
-.admin-signin-form .remember-me-container label {
-    margin: 0; /* Reset label margin */
-    font-size: 0.9rem;
-    color: #718096; /* Muted text color */
-    font-weight: 400;
-    cursor: pointer;
-}
-
-
-/* Sign In Button - consistent with other primary buttons */
 .admin-signin-form .btn {
-  /* Using a gradient similar to logout or other action buttons */
-  background: linear-gradient(135deg, #667eea, #764ba2); /* Primary accent gradient */
-  color: white;
-  padding: 0.75rem 1.5rem; /* Consistent button padding */
-  font-size: 1rem; /* Consistent font size */
-  font-weight: 600; /* Consistent font weight */
+  background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%); /* Red gradient for action */
+  padding: 16px; /* Slightly larger padding */
+  font-size: 18px;
+  width: 100%;
   border: none;
-  border-radius: 50px; /* Pill shape for buttons */
+  border-radius: 8px;
+  color: white;
+  font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3); /* Consistent shadow */
-  width: 100%; /* Full width button */
-  margin-top: 1rem; /* Spacing above button */
+  margin-top: 15px; /* Increased margin */
 }
 
 .admin-signin-form .btn:hover {
-  transform: translateY(-2px); /* Consistent hover effect */
-  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4); /* Enhanced shadow on hover */
+  background: linear-gradient(135deg, #c0392b 0%, #a93226 100%);
+  transform: translateY(-3px); /* More pronounced lift */
 }
 
-/* Error Text */
-.error-text {
-  color: #e53e3e; /* Consistent error red */
+.admin-signin-container p {
+  margin-top: 30px; /* Increased margin */
+  color: rgba(255, 255, 255, 0.9);
   text-align: center;
-  margin-top: 1.5rem; /* Consistent spacing */
-  font-weight: 600;
-  background: rgba(229, 62, 62, 0.1); /* Lighter error background */
-  padding: 0.75rem 1rem; /* Consistent padding */
-  border-radius: 8px; /* Consistent border-radius */
-  border: 1px solid rgba(229, 62, 62, 0.2); /* Consistent border */
-  font-size: 0.875rem;
 }
 
-/* Admin Branding Section */
+.admin-signin-container p a {
+  color: #fff;
+  text-decoration: none;
+  font-weight: 600;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.4); /* Slightly more visible border */
+  transition: all 0.3s ease;
+}
+
+.admin-signin-container p a:hover {
+  border-bottom-color: #fff;
+}
+
+.error-text {
+  color: #e74c3c;
+  text-align: center;
+  margin-top: 20px; /* Increased margin */
+  font-weight: 600;
+  background: rgba(231, 76, 60, 0.15); /* Slightly more transparent background */
+  padding: 12px; /* Increased padding */
+  border-radius: 8px; /* Slightly more rounded */
+  border: 1px solid rgba(231, 76, 60, 0.3); /* Slightly more visible border */
+}
+
+/* Admin specific branding */
 .admin-brand {
   text-align: center;
-  margin-bottom: 2rem; /* Consistent spacing */
+  margin-bottom: 35px; /* Increased margin */
 }
 
 .admin-brand img {
-  width: 80px; /* Slightly smaller icon */
-  height: 80px;
-  margin-bottom: 1rem; /* Consistent spacing */
+  width: 90px; /* Slightly larger */
+  height: 90px; /* Slightly larger */
+  margin-bottom: 18px; /* Increased margin */
   border-radius: 50%;
-  background: linear-gradient(135deg, #667eea, #764ba2); /* Consistent gradient for branding */
-  padding: 1rem; /* Padding inside the circle */
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* Soft shadow */
+  background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%); /* Red gradient */
+  padding: 18px; /* Increased padding */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Added shadow */
 }
 
 .admin-brand h2 {
   color: #fff;
   margin: 0;
-  font-size: 1.75rem; /* Consistent heading size */
-  font-weight: 700;
-  text-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  font-size: 2em; /* Slightly larger */
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
 }
 
 .admin-brand p {
-  color: rgba(255, 255, 255, 0.8); /* Slightly transparent white */
-  margin: 0.5rem 0 0;
-  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.85); /* Slightly more opaque */
+  margin: 8px 0 0; /* Increased margin */
+  font-size: 1.1em;
 }
 
-/* Security Notice */
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .admin-signin-container {
+    padding: 20px 15px;
+  }
+
+  .admin-signin-form {
+    padding: 35px 25px;
+    margin: 0 15px;
+  }
+
+  .admin-signin-container h1 {
+    font-size: 2em;
+  }
+
+  .admin-brand img {
+    width: 70px;
+    height: 70px;
+    padding: 15px;
+  }
+
+  .admin-brand h2 {
+    font-size: 1.8em;
+  }
+}
+
+/* Security notice */
 .security-notice {
-  background: rgba(255, 255, 255, 0.15); /* Lighter transparent background */
-  padding: 1rem 1.5rem; /* Consistent padding */
-  border-radius: 12px; /* Consistent border-radius */
-  margin-top: 2rem; /* Consistent spacing */
-  color: rgba(255, 255, 255, 0.8);
-  font-size: 0.875rem; /* Consistent font size */
+  background: rgba(255, 255, 255, 0.15); /* Slightly more opaque */
+  padding: 18px; /* Increased padding */
+  border-radius: 8px;
+  margin-top: 25px; /* Increased margin */
+  color: rgba(255, 255, 255, 0.85); /* Slightly more opaque */
+  font-size: 14px;
   text-align: center;
-  border: 1px solid rgba(255, 255, 255, 0.2); /* Consistent border */
+  border: 1px solid rgba(255, 255, 255, 0.25); /* Slightly more visible border */
 }
 
 .security-notice strong {
   color: #fff;
   display: block;
-  margin-bottom: 0.5rem;
+  margin-bottom: 8px; /* Increased margin */
 }
 
-/* Footer - consistent with other pages */
 footer {
     text-align: center;
-    padding: 1.5rem; /* Consistent padding */
-    background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%); /* Dark gradient for footer */
+    padding: 30px; /* Increased padding */
+    background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%); /* Deep blue-gray gradient */
     color: #fff;
-    font-size: 0.875rem; /* Consistent font size */
-    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
-    width: 100%; /* Ensure footer spans full width */
-    position: fixed; /* Keep footer at bottom */
-    bottom: 0;
-    left: 0;
-}
-
-/* Responsive adjustments - consistent with other files */
-@media (max-width: 768px) {
-  .admin-signin-container {
-    padding: 1rem;
-  }
-
-  .admin-signin-form {
-    padding: 1.5rem;
-    margin: 0 1rem;
-  }
-
-  .admin-signin-container h1 {
-    font-size: 2rem;
-  }
-
-  .admin-brand img {
-    width: 60px;
-    height: 60px;
-    padding: 0.75rem;
-  }
-
-  .admin-brand h2 {
-    font-size: 1.5rem;
-  }
-}
-
-/* Shake animation for error - from admin-signin.js, but good to have here */
-@keyframes shake {
-    0%, 100% { transform: translateX(0); }
-    10%, 30%, 50%, 70%, 90% { transform: translateX(-10px); }
-    20%, 40%, 60%, 80% { transform: translateX(10px); }
-}
-
-.shake {
-    animation: shake 0.5s ease-in-out;
-}
-
-.btn:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-}
-
-input:disabled {
-    background-color: #f8f9fa;
-    cursor: not-allowed;
+    font-size: 14px;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1); /* Added top shadow */
 }
